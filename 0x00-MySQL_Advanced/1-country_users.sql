@@ -1,4 +1,4 @@
--- Create table users script
+--- Create table users script
 -- Columns (id (int, auto increment, not null), email(varchar(255)), name(varchar(255))
 -- Columns country (enum(.., .., ..))
 CREATE TABLE IF NOT EXISTS users (
