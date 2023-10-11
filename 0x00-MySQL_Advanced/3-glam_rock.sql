@@ -1,9 +1,5 @@
 -- Script lists all bands with Glam rock as their main style
-SELECT band_name,
-	CASE
-		WHEN split IS NULL THEN (2022 - formed)
-		ELSE split - formed
-	END AS lifespan
+SELECT band_name, IFNULL(split, 2022) - IFNULL(formed, 0) AS lifespan
 FROM metal_bands
-WHERE style = 'Glam rock'
+WHERE style LIKE '%Glan rock%'
 ORDER BY lifespan DESC;
