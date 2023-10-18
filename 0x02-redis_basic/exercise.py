@@ -2,9 +2,6 @@
 """
 Module contains Cache class
 """
-
-
-from re import U
 import redis
 import uuid
 
