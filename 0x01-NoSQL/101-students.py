@@ -4,7 +4,11 @@ Module contains top_students function
 """
 
 
-def top_students(mongo_collection):
+from typing import Dict, List
+from pymongo.collection import Collection
+
+
+def top_students(mongo_collection: Collection) -> List[Dict]:
     """
     Top students function
     """
