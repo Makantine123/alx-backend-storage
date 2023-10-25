@@ -2,6 +2,7 @@
 """
 Module contains Cache class
 """
+import functools
 import redis
 import uuid
 from typing import Callable, Union
@@ -35,3 +36,21 @@ class Cache:
 
     def get_int(self, key: str) -> Union[int, bytes]:
         return self.get(key, fn=int)
+
+    def increment_call_count(self, method_name):
+        """Counts the number of times a function is called"""
+        if method_name in self._redis:
+            self._redis[method_name] += 1
+        else:
+            self._redis[method_name] = 1
+
+    def count_calls(self, method: Callable) -> Callable:
+        """Decorator"""
+        @functools.wraps(method)
+        def wrapper(self, *args, **kwargs):
+            method_name = method.__qualname__
+            self.increment_call_count(method_name)
+            return method(self, *args, **kwargs)
+        return wrapper
+
+
