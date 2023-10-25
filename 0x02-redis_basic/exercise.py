@@ -32,9 +32,11 @@ class Cache:
         return fn(data) if fn is not None else data
 
     def get_str(self, key: str) -> Union[str, bytes]:
+        """"""
         return self.get(key, fn=lambda d: d.decode("utf-8"))
 
     def get_int(self, key: str) -> Union[int, bytes]:
+        """"""
         return self.get(key, fn=int)
 
     def increment_call_count(self, method_name):
@@ -48,6 +50,7 @@ class Cache:
         """Decorator"""
         @functools.wraps(method)
         def wrapper(self, *args, **kwargs):
+            """"""
             method_name = method.__qualname__
             self.increment_call_count(method_name)
             return method(self, *args, **kwargs)
