@@ -39,7 +39,7 @@ class Cache:
         """"""
         return self.get(key, fn=int)
 
-    def increment_call_count(self, method_name):
+    def increment_call_count(self, method_name: str):
         """Counts the number of times a function is called"""
         if method_name in self._redis:
             self._redis[method_name] += 1
@@ -55,5 +55,3 @@ class Cache:
             self.increment_call_count(method_name)
             return method(self, *args, **kwargs)
         return wrapper
-
-
