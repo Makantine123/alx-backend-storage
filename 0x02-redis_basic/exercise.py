@@ -8,6 +8,22 @@ import uuid
 from typing import Callable, Union
 
 
+def increment_call_count(self, method_name: str):
+    if method_name in self.method_calls:
+        self.method_calls[method_name] += 1
+    else:
+        self.method_calls[method_name] = 1
+
+
+def count_calls(self, method: Callable) -> Callable:
+    @functools.wraps(method)
+    def wrapper(self, *args, **kwargs):
+        method_name = method.__qualname__
+        self.increment_call_count(method_name)
+        return method(self, *args, **kwargs)
+    return wrapper
+
+
 class Cache:
     """
     Cache class, stores an instance of the Redis client
@@ -38,20 +54,3 @@ class Cache:
     def get_int(self, key: str) -> Union[int, bytes]:
         """"""
         return self.get(key, fn=int)
-
-    def increment_call_count(self, method_name: str):
-        """Counts the number of times a function is called"""
-        if method_name in self._redis:
-            self._redis[method_name] += 1
-        else:
-            self._redis[method_name] = 1
-
-    def count_calls(self, method: Callable) -> Callable:
-        """Decorator"""
-        @functools.wraps(method)
-        def wrapper(self, *args, **kwargs):
-            """"""
-            method_name = method.__qualname__
-            self.increment_call_count(method_name)
-            return method(self, *args, **kwargs)
-        return wrapper
